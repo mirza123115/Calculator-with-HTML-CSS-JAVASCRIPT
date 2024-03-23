@@ -1,0 +1,811 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title> Emon's caculator </title>
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <!-- GOOGLE FONT -->
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;600&family=Noto+Sans+JP:wght@500&display=swap"
+        rel="stylesheet">
+    <style type="text/css">
+        @font-face {
+            font-family: "DSDIGI";
+            src: url("DSDIGI.ttf");
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            font-size: 10px;
+            font-family: Arial;
+        }
+
+        body {
+            background-color: #ffffff;
+        }
+
+        .calculator {
+            background: #18994e;
+            width: 80%;
+            height: 55rem;
+            margin: auto;
+            margin-top: 10vh;
+            border-radius: 5% 5% 5% 5%;
+            position: relative;
+            border: .05rem solid rgb(56, 25, 81);
+            border-bottom: .3rem solid rgb(56, 25, 81);
+            box-shadow: 0.5rem 0.5rem 1rem 0.1rem rgba(0, 0, 0, 0.2), -0.5rem -0.5rem 1rem 0 rgba(255, 255, 255, 0.5);
+        }
+
+        .logo {
+            position: absolute;
+            top: 9%;
+            right: 10%;
+            font-size: 1.5rem;
+            font-family: "DSDIGI";
+            color: rgba(42, 214, 114, 0.552);
+            font-weight: 600;
+            letter-spacing: 0.2rem;
+            text-shadow: white 0.5px 0.5px 0px;
+        }
+
+        .outputBox {
+            width: 80%;
+            padding: 1rem;
+            position: absolute;
+            top: 13%;
+            left: 50%;
+            transform: translate(-50%, 0);
+        }
+
+        .output {
+            width: 100%;
+            padding: .7rem;
+            font-size: 3.2rem;
+            font-weight: bold;
+            border: none;
+            text-align: end;
+            background: rgb(143, 143, 143);
+            border: 0.2rem solid #444;
+        }
+
+        .inputOutput {
+            border-radius: .5rem .5rem 0 0;
+            font-family: "DSDIGI";
+            border-bottom: none;
+        }
+
+        .resultOutput {
+            border-radius: 0 0 .5rem .5rem;
+            border-top: none;
+            font-family: 'Noto Sans JP', sans-serif;
+            font-weight: 500;
+        }
+
+        .output:focus {
+            outline: none;
+        }
+
+        .container {
+            position: absolute;
+            top: 40%;
+            left: 50%;
+            transform: translate(-50%, 0);
+            width: 80%;
+            padding: 1rem;
+        }
+
+        .btn {
+            width: 5.185rem;
+            height: 4rem;
+            margin-right: .5rem;
+            border-radius: 1rem;
+            border: none;
+            background: #6b6868;
+            border: 0.1rem solid rgba(45, 0, 82, 0.949);
+            border-bottom: 0.2rem solid rgba(45, 0, 82, 0.949);
+            color: #ddd;
+            font-size: 2rem;
+            cursor: pointer;
+            transition: .3s;
+            box-shadow: 0 0 0.2rem 0.1rem skyblue;
+        }
+
+        .btn:focus {
+            outline: none;
+        }
+
+        .btn:active {
+            height: 3.5rem;
+            background: rgba(0, 0, 0, 0.945);
+            font-size: 1.8rem;
+        }
+
+        .operator {
+            width: 6.5rem;
+            margin-right: 0;
+            background: rgba(0, 100, 96, 0.473);
+            border: 0.1rem solid rgba(0, 33, 32, 0.475);
+            border-bottom: 0.2rem solid rgba(0, 33, 32, 0.475);
+            float: right;
+        }
+
+        .operator:active {
+            background: rgba(0, 100, 96, 0.722);
+        }
+
+        .ac {
+            background: #a30000;
+            font-weight: bold;
+            border: 0.1rem solid rgba(76, 0, 0, 0.876);
+            border-bottom: 0.2rem solid rgba(76, 0, 0, 0.876);
+        }
+
+        .ac:active {
+            background: rgb(63, 0, 0);
+        }
+
+        .equal {
+            background: rgb(1, 117, 0);
+            font-weight: bold;
+            border: 0.1rem solid rgb(1, 73, 0);
+            border-bottom: 0.2rem solid rgb(1, 73, 0);
+            width: 10.87rem;
+        }
+
+        .equal:active {
+            background: rgb(1, 73, 0);
+        }
+
+        .row {
+            margin-bottom: 2rem;
+        }
+
+        .add {
+            height: 10rem;
+        }
+
+        .add:active {
+            height: 9.5rem;
+        }
+
+        .btnSc {
+            background: rgba(34, 34, 34, 0.663);
+        }
+
+        .dblZero {
+            background: #6b6868;
+        }
+
+        @media only screen and (max-width: 900px) {
+            html {
+                font-size: 8.7px;
+            }
+        }
+
+        @media only screen and (max-width: 480px) {
+            html {
+                font-size: 10px;
+            }
+
+            .btnSc {
+                display: none;
+            }
+
+            .equal {
+                width: 5.185rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="calculator">
+        <header>
+            <div class="logo">
+                Emon's machine
+            </div>
+            <div class="outputBox">
+                <input class="inputOutput output" type="text" readonly="readonly">
+                <input class="resultOutput output" type="text" readonly="readonly">
+            </div>
+        </header>
+        <div class="container">
+            <div class="row">
+                <button class="btn ac" onclick="ac()">AC</button>
+                <button class="btn" onclick="perenthisisStart()">(</button>
+                <button class="btn" onclick="perenthisisEnd()">)</button>
+                <button class="btn btnSc" onclick="mod()">%</button>
+                <button class="btn btnSc" onclick="mPos()">m+</button>
+                <button class="btn btnSc" onclick="mNeg()">m–</button>
+                <button class="btn btnSc" onclick="mR()">mr</button>
+                <button class="btn btnSc" onclick="posNeg()">±</button>
+                <button class="btn btnSc" onclick="cut()">C</button>
+                <button class="btn operator" onclick="divide()">÷</button>
+            </div>
+            <div class="row">
+                <button class="btn" onclick="seven()">7</button>
+                <button class="btn" onclick="eight()">8</button>
+                <button class="btn" onclick="nine()">9</button>
+                <button class="btn btnSc" onclick="inv()">x⁻¹</button>
+                <button class="btn btnSc" onclick="square()">x²</button>
+                <button class="btn btnSc" onclick="cube()">x³</button>
+                <button class="btn btnSc" onclick="power()">yˣ</button>
+                <button class="btn btnSc" onclick="sqrt()">√</button>
+                <button class="btn btnSc" onclick="nroot()">ˣ√y</button>
+                <button class="btn operator" onclick="multiple()">×</button>
+            </div>
+            <div class="row">
+                <button class="btn" onclick="four()">4</button>
+                <button class="btn" onclick="five()">5</button>
+                <button class="btn" onclick="six()">6</button>
+                <button class="btn btnSc" onclick="abs()">abs</button>
+                <button class="btn btnSc" onclick="log10()">log10</button>
+                <button class="btn btnSc" onclick="loge()">ln</button>
+                <button class="btn btnSc" onclick="sin()">sin</button>
+                <button class="btn btnSc" onclick="cos()">cos</button>
+                <button class="btn btnSc" onclick="tan()">tan</button>
+                <button class="btn operator" onclick="sub()">–</button>
+            </div>
+            <div class="row">
+                <button class="btn" onclick="one()">1</button>
+                <button class="btn" onclick="two()">2</button>
+                <button class="btn" onclick="three()">3</button>
+                <button class="btn btnSc" onclick="fact()">x!</button>
+                <button class="btn btnSc" onclick="log2()">log₂</button>
+                <button class="btn btnSc" onclick="exp()">e</button>
+                <button class="btn btnSc" onclick="asin()">sin⁻¹</button>
+                <button class="btn btnSc" onclick="acos()">cos⁻¹</button>
+                <button class="btn btnSc" onclick="atan()">tan⁻¹</button>
+                <button class="btn operator add" onclick="add()">+</button>
+            </div>
+
+            <div class="row">
+                <button class="btn" onclick="zero();">0</button>
+                <button class="btn" onclick="dot()">•</button>
+                <button class="btn btnSc dblZero" onclick="dblZero()">00</button>
+                <button class="btn btnSc" onclick="pi()">π</button>
+                <button class="btn btnSc" onclick="pow2()">2ˣ</button>
+                <button class="btn btnSc" onclick="random()">Rand</button>
+                <button class="btn btnSc" onclick="preAns()">Ans</button>
+                <button class="btn equal" onclick="equal()">=</button>
+            </div>
+        </div>
+    </div>
+
+
+    <script type="text/javascript">
+
+        // Add event listeners to the document to listen for keydown events
+        document.addEventListener('keydown', handleKeyDown);
+
+        function handleKeyDown(event) {
+            // Check the key code and call the corresponding function
+            switch (event.code) {
+                case 'Digit7':
+                    seven();
+                    break;
+                case 'Digit8':
+                    eight();
+                    break;
+                case 'Digit9':
+                    nine();
+                    break;
+                case 'KeyI':
+                    inv();
+                    break;
+                case 'KeyS':
+                    square();
+                    break;
+                case 'KeyC':
+                    cube();
+                    break;
+                case 'KeyP':
+                    power();
+                    break;
+                case 'KeyR':
+                    sqrt();
+                    break;
+                case 'KeyN':
+                    nroot();
+                    break;
+                case 'NumpadMultiply':
+                    multiple();
+                    break;
+
+
+                case 'Digit4':
+                    four();
+                    break;
+                case 'Digit5':
+                    five();
+                    break;
+                case 'Digit6':
+                    six();
+                    break;
+                case 'KeyA':
+                    abs();
+                    break;
+                case 'KeyM': // Assuming '1' key for log10
+                    log10();
+                    break;
+                case 'KeyL':
+                    loge();
+                    break;
+                case 'KeyS':
+                    sin();
+                    break;
+                case 'KeyC':
+                    cos();
+                    break;
+                case 'KeyT':
+                    tan();
+                    break;
+                case 'Minus':
+                    sub();
+                    break;
+                // Add more cases for other keys as needed
+
+                case 'Digit1':
+                    one();
+                    break;
+                case 'Digit2':
+                    two();
+                    break;
+                case 'Digit3':
+                    three();
+                    break;
+                case 'KeyA':
+                    add();
+                    break;
+
+                case 'Digit0':
+                    zero();
+                    break;
+                case 'Period':
+                    dot();
+                    break;
+
+
+            }
+        }
+
+
+
+        // NUMBER FUNCTION javascript code for internal funtionality
+        function zero() {
+            document.querySelector(".inputOutput").value += 0;
+        }
+        function one() {
+            document.querySelector(".inputOutput").value += 1;
+        }
+        function two() {
+            document.querySelector(".inputOutput").value += 2;
+        }
+        function three() {
+            document.querySelector(".inputOutput").value += 3;
+        }
+        function four() {
+            document.querySelector(".inputOutput").value += 4;
+        }
+        function five() {
+            document.querySelector(".inputOutput").value += 5;
+        }
+        function six() {
+            let y = "5+2";
+            document.querySelector(".inputOutput").value += 6;
+        }
+        function seven() {
+            document.querySelector(".inputOutput").value += 7;
+        }
+        function eight() {
+            document.querySelector(".inputOutput").value += 8;
+        }
+        function nine() {
+            document.querySelector(".inputOutput").value += 9;
+        }
+        function dot() {
+            document.querySelector(".inputOutput").value += ".";
+        }
+
+        //OPERATORS FUNCTION 
+        function ac() {
+            document.querySelector(".inputOutput").value = "";
+            document.querySelector(".resultOutput").value = "";
+        }
+        function perenthisisStart() {
+            document.querySelector(".inputOutput").value += "("
+        }
+        function perenthisisEnd() {
+            document.querySelector(".inputOutput").value += ")"
+        }
+        function cut() {
+            document.querySelector(".inputOutput").value = document.querySelector(".inputOutput").value.substring(0, document.querySelector(".inputOutput").value.length - 1)
+        }
+        function dblZero() {
+            document.querySelector(".inputOutput").value += "00"
+        }
+
+
+        //constant value
+        function pi() {
+            document.querySelector(".inputOutput").value += Math.PI
+        }
+        function exp() {
+            document.querySelector(".inputOutput").value += Math.E
+        }
+
+        //sinusoidal function
+        let a = 0, b = 0, c = 0, d = 0, e = 0, f = 0, g = 0, h = 0, i = 0, j = 0, k = 0, l = 0, m = 0;
+        function sin() {
+
+            a++;
+            document.querySelector(".inputOutput").value += "sin("
+
+        }
+
+        function cos() {
+            b++;
+
+            document.querySelector(".inputOutput").value += "cos("
+        }
+
+        function tan() {
+            c++;
+
+            document.querySelector(".inputOutput").value = "tan("
+        }
+
+        function asin() {
+            d++;
+
+            document.querySelector(".inputOutput").value = "asin("
+        }
+
+        function acos() {
+            e++;
+
+            document.querySelector(".inputOutput").value += "acos("
+        }
+
+        function atan() {
+            f++;
+
+            document.querySelector(".inputOutput").value = "atan("
+        }
+
+
+        //logerithomic function
+        function log10() {
+
+            g++;
+            document.querySelector(".inputOutput").value += "log10("
+        }
+
+        function log2() {
+
+            h++;
+            document.querySelector(".inputOutput").value += "log2("
+        }
+
+        function loge() {
+            i++;
+            document.querySelector(".inputOutput").value += "log("
+        }
+
+        function random() {
+            document.querySelector(".inputOutput").value += Math.floor(Math.random() * 100)
+        }
+
+
+        //power function
+        function inv() {
+            var x = document.querySelector(".inputOutput").value
+            document.querySelector(".resultOutput").value = Math.pow(x, -1)
+        }
+
+        function square() {
+            var x = document.querySelector(".inputOutput").value
+            document.querySelector(".resultOutput").value = Math.pow(x, 2)
+        }
+
+        function cube() {
+            var x = document.querySelector(".inputOutput").value
+            document.querySelector(".resultOutput").value = Math.pow(x, 3)
+        }
+
+        function power() {
+            document.querySelector(".inputOutput").value += "**";
+
+        }
+
+        function sqrt() {
+            j++;
+
+            document.querySelector(".resultOutput").value += "pow(";
+        }
+
+        function nroot() {
+            k++;
+
+            document.querySelector(".inputOutput").value += "**(1/";
+        }
+
+        function pow2() {
+            l++;
+
+
+            document.querySelector(".inputOutput").value += "pow(2,";
+        }
+
+        function abs() {
+            m++;
+
+            document.querySelector(".inputOutput").value += "abs(";
+        }
+
+
+        function factx(num) {
+            if (num == 0)
+                return 1;
+            else {
+                return (num * factx(num - 1));
+            }
+        }
+
+
+        function fact() {
+            var x = document.querySelector(".inputOutput").value
+            document.querySelector(".resultOutput").value = factx(x)
+        }
+
+
+        //basic operation
+        function add() {
+            document.querySelector(".inputOutput").value += "+";
+        }
+        function sub() {
+            document.querySelector(".inputOutput").value += "-";
+        }
+        function multiple() {
+            document.querySelector(".inputOutput").value += "*";
+        }
+        function divide() {
+            document.querySelector(".inputOutput").value += "/";
+        }
+        function mod() {
+            document.querySelector(".inputOutput").value += "%"
+        }
+        function preAns() {
+            var x = eval(document.querySelector(".resultOutput").value)
+            document.querySelector(".inputOutput").value = x
+            document.querySelector(".resultOutput").value = "";
+        }
+        function equal() {
+            if (a == 1) {
+                let x = document.querySelector(".inputOutput").value
+
+
+                if (x.includes(")")) {
+
+                    x = x.replace(")", "");
+
+                }
+
+                let z = "Math." + x + "*(Math.PI / 180))";
+                document.querySelector(".resultOutput").value = eval(z).toFixed(2);
+                a = 0;
+                x = "";
+
+            }
+            else if (b == 1) {
+                let x = document.querySelector(".inputOutput").value
+
+
+                if (x.includes(")")) {
+
+                    x = x.replace(")", "");
+
+                }
+
+                let z = "Math." + x + "*(Math.PI / 180))";
+                document.querySelector(".resultOutput").value = eval(z).toFixed(2);
+                b = 0;
+                x = "";
+
+            }
+            else if (c == 1) {
+                let x = document.querySelector(".inputOutput").value
+
+
+                if (x.includes(")")) {
+
+                    x = x.replace(")", "");
+
+                }
+
+                let z = "Math." + x + "*(Math.PI / 180))";
+                document.querySelector(".resultOutput").value = eval(z).toFixed(2);
+                c = 0;
+                x = "";
+
+            }
+            else if (d == 1) {
+                let x = document.querySelector(".inputOutput").value
+
+
+                if (x.includes(")")) {
+
+                    x = x.replace(")", "");
+
+                }
+
+                let z = "(180 / Math.PI)*" + "Math." + x + ")";
+                document.querySelector(".resultOutput").value = eval(z).toFixed(2);
+                d = 0;
+                x = "";
+
+            }
+            else if (e == 1) {
+                let x = document.querySelector(".inputOutput").value
+
+
+                if (x.includes(")")) {
+
+                    x = x.replace(")", "");
+
+                }
+
+                let z = "(180 / Math.PI)*" + "Math." + x + ")";
+                document.querySelector(".resultOutput").value = eval(z).toFixed(2);
+                e = 0;
+                x = "";
+
+            }
+            else if (f == 1) {
+                let x = document.querySelector(".inputOutput").value
+
+
+                if (x.includes(")")) {
+
+                    x = x.replace(")", "");
+
+                }
+
+                let z = "(180 / Math.PI)*" + "Math." + x + ")";
+                document.querySelector(".resultOutput").value = eval(z).toFixed(2);
+                f = 0;
+                x = "";
+
+            }
+            else if (g == 1) {
+                let x = document.querySelector(".inputOutput").value
+
+
+                if (x.includes(")")) {
+
+                    x = x.replace(")", "");
+
+                }
+
+                let z = "Math." + x + ")";
+                document.querySelector(".resultOutput").value = eval(z)
+                g = 0;
+                x = "";
+
+            }
+            else if (h == 1) {
+                let x = document.querySelector(".inputOutput").value
+
+
+                if (x.includes(")")) {
+
+                    x = x.replace(")", "");
+
+                }
+
+                let z = "Math." + x + ")";
+                document.querySelector(".resultOutput").value = eval(z)
+                h = 0;
+                x = "";
+
+            }
+            else if (i == 1) {
+                let x = document.querySelector(".inputOutput").value
+
+
+                if (x.includes(")")) {
+
+                    x = x.replace(")", "");
+
+                }
+
+                let z = "Math." + x + ")";
+                document.querySelector(".resultOutput").value = eval(z)
+                i = 0;
+                x = "";
+
+            }
+            else if (j == 1) {
+                let x = document.querySelector(".inputOutput").value
+
+
+                if (x.includes(")")) {
+
+                    x = x.replace(")", "");
+
+                }
+
+                let z = "Math." + x + ",.5)";
+                document.querySelector(".resultOutput").value = eval(z)
+                j = 0;
+                x = "";
+
+            }
+            else if (k == 1) {
+                let x = document.querySelector(".inputOutput").value
+
+
+                if (x.includes(")")) {
+
+                    x = x.replace(")", "");
+
+                }
+
+                let z = x + ")";
+                document.querySelector(".resultOutput").value = eval(z)
+                k = 0;
+                x = "";
+
+            }
+            else if (l == 1) {
+                let x = document.querySelector(".inputOutput").value
+
+                if (x.includes(")")) {
+
+                    x = x.replace(")", "");
+
+                }
+
+
+                let z = "Math." + x + ")";
+                document.querySelector(".resultOutput").value = eval(z)
+                l = 0;
+                x = "";
+
+            }
+
+            else if (m == 1) {
+                let x = document.querySelector(".inputOutput").value
+
+                let regexPattern = /\)/;
+
+                // Check if the regex pattern is found in x
+                if (regexPattern.test(x)) {
+                    // Remove ")" and store the result in y
+                    x = x.replace(regexPattern, "");
+                }
+                let z = "Math." + x + ")";
+                document.querySelector(".resultOutput").value = eval(z)
+                m = 0;
+                x = "";
+            }
+
+            else {
+
+                document.querySelector(".resultOutput").value = eval(document.querySelector(".inputOutput").value);
+            }
+
+
+        }
+    </script>
+</body>
+
+</html>
